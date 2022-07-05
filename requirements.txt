@@ -78,3 +78,4 @@ yarl==1.7.2
 zipp
 django_heroku
 whitenoise
+gunicorn
