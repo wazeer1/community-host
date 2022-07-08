@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django_inlinecss',
     'django_user_agents',
     'qr_code',
+    'django-cors-headers',
 
     'django.contrib.admin',
     'django.contrib.auth',
