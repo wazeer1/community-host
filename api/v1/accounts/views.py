@@ -90,15 +90,18 @@ def register(request):
 
                     else:
                         response_data={
-                            'username already exist'
+                            'StatusCode':6001,
+                            'message':'username already exist'
                         }
                 else:
                     response_data={
-                        'phone already registered'
+                        'StatusCode':6001,
+                        'message':'phone already registered'
                     }
         else:
             response_data={
-                'verify phone first'
+                'StatusCode':6001,
+                'message':'verify phone first'
             }
     else:
         response_data = {
@@ -140,11 +143,18 @@ def send_otp(request):
                         otp = otp,
                     )
                     response_data={
-                        'otp sent succecfully'
+                        'StatuCode':6000,
+                        'data':
+                            {'title':'success',
+                            'message':'otp sent succecfully'}
+                        
                     }
             else:
                 response_data={
-                    'not valid number'
+                    'StatuCode':6001,
+                        'data':
+                            {'title':'failed',
+                            'message':'not valid number'}
                 }
         else:
             response_data={
