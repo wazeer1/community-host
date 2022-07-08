@@ -128,11 +128,13 @@ def send_otp(request):
                     otprecord=OtpRecord.objects.get(phone=phone_number,is_applied=False)
                     if otprecord.attempts <= 3 :
                         response_data={
-                            'otp': otprecord.otp
+                            'StatusCode':6000,
+                            'message': 'resended'
                         }
                     else:
                         response_data={
-                            'limit exceed'
+                            'StatusCode':6001,
+                            'message':'limit exceed'
                         }
                 else:
                     otp = randomnumber(4)
@@ -143,7 +145,7 @@ def send_otp(request):
                         otp = otp,
                     )
                     response_data={
-                        'StatuCode':6000,
+                        'StatusCode':6000,
                         'data':
                             {'title':'success',
                             'message':'otp sent succecfully'}
@@ -151,7 +153,7 @@ def send_otp(request):
                     }
             else:
                 response_data={
-                    'StatuCode':6001,
+                    'StatusCode':6001,
                         'data':
                             {'title':'failed',
                             'message':'not valid number'}
