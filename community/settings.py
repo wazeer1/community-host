@@ -59,6 +59,7 @@ INSTALLED_APPS = [
 ENCRYPT_KEY = "zKWBRchVTIPmXLkPH6feN-u4A7OPOIuk1X__tfg-4qM="
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
