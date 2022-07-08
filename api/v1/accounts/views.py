@@ -185,11 +185,13 @@ def verify_otp(request):
             otprecord.is_applied=True
             otprecord.save()
             response_data={
-                'verified otp succesfully'
+                'StatusCode':6000,
+                'message':'verified otp succesfully'
             }
         else:
             response_data={
-                'already applied'
+                'StatusCode':6001,
+                'message':'already applied'
             }
     else:
         response_data = {
