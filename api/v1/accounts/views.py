@@ -21,7 +21,36 @@ from main.functions import generate_unique_id, get_auto_id, randomnumber, get_cl
 from main.models import Country
 from api.v1.main.functions import validate_password, generate_serializer_errors
 from django.contrib.auth.hashers import make_password
+from django.shortcuts import render
+import pyrebase
 
+configfire={
+    "apiKey": "AIzaSyDeZM5wXi22O1t71tK6vpAwHYPI-GEOWU4",
+    "authDomain": "community-chat-9a0c4.firebaseapp.com",
+    "projectId": "community-chat-9a0c4",
+    "databaseURL":"https://community-chat-9a0c4-default-rtdb.firebaseio.com/",
+    "storageBucket": "community-chat-9a0c4.appspot.com",
+    "messagingSenderId": "845702261555",
+    "appId": "1:845702261555:web:6ebd88ed85c98faa88ec46",
+    "measurementId": "G-SGZEMQ14WD"
+}
+
+firebase=pyrebase.initialize_app(configfire)
+authe = firebase.auth()
+database=firebase.database()
+
+def index(request):
+        #accessing our firebase data and storing it in a variable
+        name = database.child('Data').child('Name').get().val()
+        stack = database.child('Data').child('Stack').get().val()
+        framework = database.child('Data').child('Framework').get().val()
+    
+        context = {
+            'name':name,
+            'stack':stack,
+            'framework':framework
+        }
+        return render(request, 'index.html', context)
 
 @api_view(['POST'])
 @permission_classes((AllowAny,))
@@ -47,6 +76,8 @@ def register(request):
                             password=password
                         )
                         encpt_password=encrypt(password)
+                        fireauth=authe.create_user_with_email_and_password(email,password)
+                        uid=fireauth['localId']
                         profile = Profile.objects.create(
                             ign=ign,
                             ig_id=ig_id,
@@ -57,6 +88,7 @@ def register(request):
                             password=encpt_password,
                             is_verified=True,
                             country=country_code,
+                            fireid=uid,
                         )
                         protocol = "http://"
                         headers = {
@@ -69,10 +101,12 @@ def register(request):
                         }
                         url = protocol + host + "/api/v1/accounts/token/"
                         response = requests.post(url, headers=headers, data=json.dumps(data))
-                        print(response)
+                        # idtoken = request.session[uid]
+                        print('idtoken',uid)
                         if response.status_code == 200:
                             response_data = {
                                 "StatusCode": 6000,
+                                'firebaseId':uid,
                                 "data": {
                                     "title": "Successful",
                                     "student_token" : response.json(),
@@ -217,6 +251,7 @@ def login_user(request):
             profile = Profile.objects.get(Q(phone=username) | Q(ig_id = username))
             decr_password = decrypt(profile.password)
             phone=profile.phone
+            fireid = profile.fireid
             if decr_password == password :
                 protocol = "http://"
                 headers = {
@@ -233,6 +268,7 @@ def login_user(request):
                 if response.status_code == 200:
                     response_data = {
                         "StatusCode": 6000,
+                        'fireid':fireid,
                         "data": {
                             "title": "Successful",
                             "student_token" : response.json(),

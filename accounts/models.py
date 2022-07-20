@@ -36,6 +36,7 @@ class Profile(models.Model):
     photo = VersatileImageField(upload_to="profile/",blank=True,null=True)
     country = models.ForeignKey('main.Country', on_delete=models.CASCADE)
     password = models.TextField(blank=True, null=True)
+    fireid = models.CharField(default='null',max_length=128, blank=True, null=True)
     
     otp_number = models.PositiveIntegerField(blank=True, null=True)
     is_verified = models.BooleanField(default=False)
