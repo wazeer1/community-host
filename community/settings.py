@@ -23,10 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY =os.environ.get("SECRET_KEY")
+# SECRET_KEY =os.environ.get("SECRET_KEY")
+SECRET_KEY ='django-insecure--_r)xq%imt-+faz)-z)$di1xobku1do6%5_q#b!idn8oum6@a-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -39,9 +40,9 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'storages',
     'mailqueue',
-    'django_inlinecss',
-    'django_user_agents',
-    'qr_code',
+    # 'django_inlinecss',
+    # 'django_user_agents',
+    # 'qr_code',
     "corsheaders",
 
     'firebase_auth',
@@ -172,6 +173,11 @@ MEDIA_URL='/media/'
 
 MEDIA_ROOT='mymedia'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
